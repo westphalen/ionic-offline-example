@@ -7,5 +7,38 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="onRefresh($event)" [enabled]="cache && !refreshSubscription">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
+  <h1>
+    Hello!
+  </h1>
+  <p>
+    Refresh this page, close the app, navigate back and forth. When you come back, the data will be the same as you see
+    now. You can pull-to-refresh to update the data.
+  </p>
+  <p>
+    Also try the contact page, which will automatically refresh upon entry.
+  </p>
+
+  <div *ngIf="placeholder$ | async as placeholder; else loading">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          {{ placeholder.title }}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{ placeholder.body }}
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
+
+<ng-template #loading>
+  <p>
+    Loading placeholder data...
+    <ion-spinner name="crescent"></ion-spinner>
+  </p>
+</ng-template>

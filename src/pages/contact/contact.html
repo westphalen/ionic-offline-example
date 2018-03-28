@@ -6,12 +6,41 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-    <ion-list-header>Follow us on Twitter</ion-list-header>
-    <ion-item>
-      <ion-icon name="ionic" item-start></ion-icon>
-      @ionicframework
-    </ion-item>
-  </ion-list>
+<ion-content padding>
+  <ion-refresher (ionRefresh)="onRefresh($event)" [enabled]="cache && !refreshSubscription">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <h1>
+    Hello!
+  </h1>
+  <p>
+    You will see the cached data for a second until we retrieve refreshed data from the server. This speeds up the app,
+    improving the user experience.
+  </p>
+
+  <div *ngIf="placeholder$ | async as placeholder; else loading">
+    <p *ngIf="refreshSubscription">
+      Psst.. We're actually refreshing the data in the background now.
+      <ion-spinner name="crescent"></ion-spinner>
+    </p>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          {{ placeholder.title }}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{ placeholder.body }}
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
+
+<ng-template #loading>
+  <p>
+    Loading placeholder data...
+    <ion-spinner name="crescent"></ion-spinner>
+  </p>
+</ng-template>
